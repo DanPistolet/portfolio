@@ -4,6 +4,8 @@ A cyberpunk / Japanese game UI inspired personal portfolio for motion design, AI
 
 **Live website:** https://yadanix.vercel.app
 
+![Portfolio Preview](public/assets/portfolio-preview.png)
+
 ---
 
 ## Featured Projects
