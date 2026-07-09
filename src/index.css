@@ -1,0 +1,542 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body, #root {
+  min-height: 100%;
+}
+
+body {
+  background: #0A0A0A;
+  font-family: 'Space Mono', monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+* { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.15) transparent; }
+
+/* ── Utility: panel dividers ── */
+.panel-divider {
+  border-right: 1px solid #222;
+}
+
+/* ── Entrance animations (CSS-based, works in background tabs) ── */
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.anim-nav      { animation: slideInDown  .5s ease-out both; }
+.anim-anime    { animation: slideInLeft  .6s ease-out .08s both; }
+.anim-profile  { animation: slideInRight .6s ease-out .16s both; }
+.anim-mission  { animation: slideInUp    .6s ease-out .28s both; }
+.anim-irl      { animation: slideInUp    .6s ease-out .38s both; }
+.anim-motion   { animation: slideInUp    .6s ease-out .46s both; }
+.anim-footer   { animation: slideInUp    .4s ease-out .52s both; }
+
+/* ── Ticker animation ── */
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-track { animation: ticker 24s linear infinite; }
+
+/* ── Glitch on logo ── */
+@keyframes glitch {
+  0%,92%,100% { clip-path: none; transform: none; }
+  93%          { clip-path: inset(15% 0 40% 0); transform: translateX(-3px); }
+  95%          { clip-path: inset(55% 0 10% 0); transform: translateX(3px); }
+  97%          { clip-path: inset(35% 0 55% 0); transform: translateX(-2px); }
+  99%          { clip-path: none; transform: translateX(0); }
+}
+.glitch-img { animation: glitch 7s ease-in-out infinite; }
+
+/* ── Scanline ── */
+@keyframes scanline {
+  0%   { top: -8%; }
+  100% { top: 108%; }
+}
+.scanline-el {
+  position: absolute;
+  left: 0; right: 0;
+  height: 2px;
+  background: rgba(200,229,0,0.07);
+  animation: scanline 3.5s linear infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ── Blink cursor ── */
+@keyframes blink { 0%,100% { opacity:1 } 50% { opacity:0 } }
+.blink { animation: blink 1.1s step-end infinite; }
+
+/* ── Pulse dot ── */
+@keyframes pulse-dot {
+  0%,100% { opacity:1; transform:scale(1); }
+  50%      { opacity:.4; transform:scale(.75); }
+}
+.pulse-dot { animation: pulse-dot 1.4s ease-in-out infinite; }
+
+/* ── Corner bracket helper ── */
+.bracket-corner {
+  position: absolute;
+  width: 14px; height: 14px;
+  border-color: #000;
+  border-style: solid;
+}
+.bracket-corner.tl { top:8px; left:8px;  border-width: 2px 0 0 2px; }
+.bracket-corner.tr { top:8px; right:8px; border-width: 2px 2px 0 0; }
+.bracket-corner.bl { bottom:8px; left:8px;  border-width: 0 0 2px 2px; }
+.bracket-corner.br { bottom:8px; right:8px; border-width: 0 2px 2px 0; }
+
+/* Cream panel corner brackets use cream-contrast */
+.bracket-dark { border-color: rgba(0,0,0,.25); }
+
+/* ── Diagonal stripe (WIP sticker) ── */
+.diagonal-stripe {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #C8E500 0px, #C8E500 3px,
+    transparent 3px, transparent 9px
+  );
+}
+
+/* ── Checkerboard (VIP badge) ── */
+.checkerboard {
+  background-image:
+    linear-gradient(45deg, #000 25%, transparent 25%),
+    linear-gradient(-45deg,#000 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #000 75%),
+    linear-gradient(-45deg, transparent 75%, #000 75%);
+  background-size: 4px 4px;
+  background-position: 0 0, 0 2px, 2px -2px, -2px 0;
+}
+
+/* ── Mobile-only elements hidden on desktop ── */
+@media (min-width: 768px) {
+  .mv-nav-bar { display: none !important; }
+}
+
+/* ── Video thumb hover ── */
+.video-thumb { transition: transform .25s ease, box-shadow .25s ease; }
+.video-thumb:hover { transform: scale(1.03); box-shadow: 0 0 16px rgba(200,229,0,0.15); }
+.video-thumb:hover .play-btn-bg { opacity: 1; }
+.play-btn-bg { transition: opacity .2s; }
+
+/* ════════════════════════════════════════════════════════════════
+   MOBILE LAYOUT  — screens < 768 px
+   All desktop rules above this block are untouched.
+   ════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+
+  /* ── Base ── */
+  body { cursor: auto !important; }
+  html {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+  body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    overscroll-behavior-x: none !important;
+    touch-action: pan-y !important;
+  }
+  #root {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+  /* App root wrapper */
+  #root > div {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+  [style*="cursor: none"], [style*="cursor:none"] { cursor: auto !important; }
+
+  /* ── Hide desktop-only cursor elements (glow + dot) ── */
+  .desktop-cursor-glow,
+  .desktop-cursor-dot {
+    display: none !important;
+  }
+
+  /* ── Clamp every fixed/absolute element to viewport width ── */
+  *[style*="position: fixed"],
+  *[style*="position:fixed"] {
+    max-width: 100vw !important;
+  }
+
+  /* ── Clip overflow on all layout sections so thumb overflow can't
+     bubble up through visible-overflow ancestors to the page level ── */
+  .anim-motion,
+  .mobile-bottom-row,
+  .mobile-hero-grid,
+  .anim-mission,
+  .anim-irl {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  /* Allow horizontal scroll ONLY within the thumbs strip itself */
+  .mobile-motion-thumbs {
+    touch-action: pan-x pan-y !important;
+  }
+
+  /* ── HUD nav: floating glass panel, iPhone-safe ── */
+  .mobile-topnav {
+    position: fixed !important;
+    /* Sit flush with Dynamic Island / notch using safe-area-inset-top */
+    top: env(safe-area-inset-top, 0px) !important;
+    left: env(safe-area-inset-left, 0px) !important;
+    right: env(safe-area-inset-right, 0px) !important;
+    z-index: 200 !important;
+    height: 38px !important;
+    background: rgba(8, 8, 8, 0.82) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(160%) !important;
+    backdrop-filter: blur(10px) saturate(160%) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+    color: rgba(255,255,255,0.88) !important;
+  }
+  /* Re-tint icons and text that inherit from nav */
+  .mobile-topnav svg { stroke: rgba(255,255,255,0.88) !important; }
+  .mobile-topnav span:not([style]) { color: rgba(255,255,255,0.88) !important; }
+  /* Keep the warning badge lime — it's the HUD accent */
+  .mobile-topnav [style*="background: rgb(200"] span,
+  .mobile-topnav [style*="background:#C8E500"] span { color: #000 !important; }
+  /* Hide the decorative ⊙/✳/□ center symbols — they overlap the badge on mobile */
+  .mobile-topnav > div:nth-child(2) { display: none !important; }
+  /* Compact warning badge text to fit the 38px nav */
+  .mobile-topnav [aria-label*="Creative"] .font-mono {
+    font-size: 7px !important;
+    letter-spacing: 0.04em !important;
+    line-height: 1.3 !important;
+  }
+  /* Tighter badge padding on mobile */
+  .mobile-topnav [aria-label*="Creative"] {
+    padding: 2px 6px !important;
+    gap: 5px !important;
+  }
+  /* Slightly smaller gap between nav items */
+  .mobile-topnav > div:last-child { gap: 6px !important; }
+  /*
+   * Push page content below the fixed nav + safe area.
+   * 38px nav height + safe-area-inset-top (Dynamic Island / notch).
+   */
+  .mobile-hero-grid {
+    margin-top: calc(38px + env(safe-area-inset-top, 0px)) !important;
+  }
+
+  /* ── Footer: never hidden behind Home Indicator ── */
+  .mobile-footer {
+    padding-bottom: max(8px, env(safe-area-inset-bottom, 8px)) !important;
+  }
+
+  /* ── Side gutter: content clear of rounded screen edges ── */
+  html, body, #root {
+    padding-left:  env(safe-area-inset-left,  0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
+  /* ── Hero: stack vertically ── */
+  .mobile-hero-grid {
+    flex-direction: column !important;
+    min-height: unset !important;
+  }
+
+  /* Anime panel: reduced height */
+  .mobile-hero-anime {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 52vw !important;
+    min-height: 160px !important;
+    min-width: unset !important;
+  }
+  .mobile-hero-anime img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: top center !important;
+  }
+
+  /* Profile panel: tighter padding */
+  .mobile-hero-profile {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: unset !important;
+  }
+  .mobile-hero-profile > div[style*="position: absolute"],
+  .mobile-hero-profile > div[style*="position:absolute"] {
+    position: static !important;
+    height: auto !important;
+    inset: unset !important;
+    padding: 10px 16px 14px !important;
+  }
+  .mobile-hero-profile h1 {
+    font-size: clamp(1.9rem, 9vw, 3rem) !important;
+    line-height: 0.92 !important;
+    margin-bottom: 4px !important;
+  }
+
+  /* ── Bottom row: vertical stack ── */
+  .mobile-bottom-row {
+    flex-direction: column !important;
+    min-height: unset !important;
+  }
+  .mobile-bottom-row > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: unset !important;
+    border-right: none !important;
+    border-bottom: 1px solid #222 !important;
+  }
+
+  /* ── Mission Log: full width, cases stacked vertically ── */
+  .anim-mission { width: 100% !important; }
+
+  .mobile-mission-cards {
+    flex-direction: column !important;
+    gap: 0 !important;
+  }
+  /* Each stacked case: add a separator line below */
+  .mobile-mission-cards .mission-case-card {
+    padding-bottom: 10px !important;
+    border-bottom: 1px solid #1a1a1a !important;
+    min-width: 0 !important;
+  }
+  /* Logo sized for stacked layout */
+  .mobile-mission-cards .case-logo-wrap {
+    height: 64px !important;
+  }
+
+  /* ── IRL Portrait: compact ── */
+  .mobile-irl {
+    width: 100% !important;
+    height: 190px !important;
+    min-height: 190px !important;
+    flex: unset !important;
+  }
+  /* Shrink decorative side columns so logo gets more space */
+  .mobile-irl .flex-col.justify-center.gap-1.px-2.shrink-0 {
+    padding: 0 6px !important;
+  }
+  .mobile-irl .flex-col.justify-center.gap-1.px-2.shrink-0 .w-2\.5 {
+    width: 8px !important;
+    height: 24px !important;
+  }
+  /* Cat logo: slightly smaller, well-centered */
+  .mobile-irl .glitch-img {
+    max-width: 160px !important;
+    max-height: 160px !important;
+  }
+
+  /* ── Motion Practice: full width ── */
+  .anim-motion { width: 100% !important; flex: unset !important; }
+  /* Override the hardcoded height:112px on the video section container */
+  .anim-motion > div[style*="height: 112"] { height: auto !important; }
+
+  /* Thumbnails: taller and wider, scrollable horizontally */
+  .mobile-motion-thumbs {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    gap: 6px !important;
+    padding-bottom: 4px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  .mobile-motion-thumbs::-webkit-scrollbar { display: none; }
+  .mobile-motion-thumbs .video-thumb {
+    height: 130px !important;
+    min-width: 160px !important;
+    flex: 0 0 160px !important;
+  }
+
+  /* Motion bottom: stack tools + QR */
+  .mobile-motion-bottom { flex-direction: column !important; }
+  .mobile-motion-bottom > * {
+    width: 100% !important;
+    border-right: none !important;
+    border-bottom: 1px solid #222 !important;
+  }
+
+  /* Tools: reduce internal padding slightly */
+  .mobile-motion-bottom .flex.gap-5.px-3 {
+    gap: 20px !important;
+    padding: 8px 12px !important;
+  }
+
+  /* QR panel: full width, content centered */
+  .mobile-qr-panel {
+    width: 100% !important;
+    min-width: unset !important;
+    height: auto !important;
+  }
+  .mobile-qr-panel > div:last-child {
+    padding: 12px 16px !important;
+    gap: 16px !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* ── Footer: auto height, wrap ── */
+  .mobile-footer {
+    height: auto !important;
+    min-height: 27px !important;
+    flex-wrap: wrap !important;
+    padding: 8px 10px !important;
+    gap: 6px !important;
+  }
+  /* Japanese button: don't shrink below its content — wrap to next row if needed */
+  .mobile-footer > div:nth-child(2) {
+    flex-shrink: 0 !important;
+    min-width: max-content !important;
+  }
+
+  /* ── Animations: simpler on mobile ── */
+  .anim-mission, .anim-irl, .anim-motion { animation-name: slideInUp !important; }
+
+  /* ── No layout-shift hover on touch ── */
+  .video-thumb:hover { transform: none !important; }
+
+  /* ══════════════════════════════════════════════════════════════
+     CASE MODAL — mobile fixes
+     ══════════════════════════════════════════════════════════════ */
+
+  /* Header: a bit more breathing room */
+  [role="dialog"] > div > div:first-of-type {
+    padding: 10px 14px !important;
+  }
+
+  /* Stack left (preview) above right (detail) */
+  .cm-body {
+    flex-direction: column !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Left panel: full width, tabs on top, height sized to content */
+  .cm-left {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex-shrink: 0 !important;
+    height: auto !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    /* Stack ThumbStrip above the preview content */
+    flex-direction: column !important;
+  }
+
+  /* ThumbStrip → horizontal tab bar across the top */
+  .cm-left > div:first-child {
+    width: 100% !important;
+    flex-direction: row !important;
+    height: auto !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+  }
+  /* Each tab button: equal width, fixed height */
+  .cm-left > div:first-child > div {
+    flex: 1 !important;
+    width: auto !important;
+    height: 28px !important;
+    border-radius: 0 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: 1px solid rgba(255,255,255,0.05) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .cm-left > div:first-child > div:last-child {
+    border-right: none !important;
+  }
+  /* Active indicator: show at bottom instead of left side */
+  .cm-left > div:first-child > div > div:first-child {
+    top: auto !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 2px !important;
+  }
+  /* mainRef: let it grow to content height */
+  .cm-left > div:last-child {
+    flex: unset !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+  /* contentRef (flex:1 inline) → auto so it doesn't collapse */
+  .cm-left > div:last-child > div:not([aria-hidden]) {
+    flex: unset !important;
+    height: auto !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    padding: 8px 0 !important;
+  }
+  /* key animation wrapper has height:100% inline → override to auto */
+  .cm-left > div:last-child > div:not([aria-hidden]) > div {
+    height: auto !important;
+    width: 100% !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+  }
+
+  /* Right panel: full width, don't shrink — forces cm-body to scroll */
+  .cm-right {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: unset !important;
+    flex-shrink: 0 !important;
+    min-height: 0 !important;
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    padding: 12px 14px !important;
+  }
+
+  /* All videos inside the modal: contained and proportional */
+  .cm-left video {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    display: block !important;
+  }
+
+  /* Video list rows: prevent text from blowing out width */
+  .cm-left [style*="whiteSpace: nowrap"],
+  .cm-left [style*="white-space: nowrap"] {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+  }
+}

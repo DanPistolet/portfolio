@@ -1,0 +1,81 @@
+#!/bin/bash
+# Restore source entry, build from source, deploy to static server
+set -e
+cd "$(dirname "$0")"
+cat > index.html << 'HTML'
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Daniel Moor-Young — Motion Designer</title>
+    <link rel="icon" href="/assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet" />
+    <script type="module" src="/src/main.jsx"></script>
+  </head>
+  <body><div id="root"></div></body>
+</html>
+HTML
+npm run build
+JS=$(ls dist/assets/index-*.js | xargs basename)
+CSS=$(ls dist/assets/index-*.css | xargs basename)
+cp dist/assets/$JS assets/
+cp dist/assets/$CSS assets/
+# Copy static assets from public/assets → assets/ (served root)
+find public/assets \( -name "*.mp4" -o -name "*.png" -o -name "*.jpg" -o -name "*.webp" -o -name "*.ico" \) 2>/dev/null | xargs -I{} cp {} assets/ 2>/dev/null || true
+cat > index.html << HTML
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Daniel Moor-Young — Motion Designer</title>
+
+    <!-- SEO -->
+    <meta name="description" content="Portfolio of Daniel Moor-Young — Creative Motion Designer specialising in UI/UX motion, 2D animation, and branding. Based in Switzerland, open to remote work." />
+    <meta name="author" content="Daniel Moor-Young" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph (LinkedIn, Telegram, WhatsApp, Facebook) -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:url"         content="https://yadanix.vercel.app/" />
+    <meta property="og:title"       content="Daniel Moor-Young — Motion Designer" />
+    <meta property="og:description" content="Creative Motion Designer specialising in UI/UX motion, 2D animation, and branding. Based in Switzerland, open to remote work." />
+    <meta property="og:image"       content="https://yadanix.vercel.app/assets/og-image.png" />
+    <meta property="og:image:width"  content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale"      content="en_US" />
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content="Daniel Moor-Young — Motion Designer" />
+    <meta name="twitter:description" content="Creative Motion Designer specialising in UI/UX motion, 2D animation, and branding. Based in Switzerland, open to remote work." />
+    <meta name="twitter:image"       content="https://yadanix.vercel.app/assets/og-image.png" />
+
+    <!-- Favicons -->
+    <link rel="icon" href="/assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet" />
+    <script type="module" crossorigin src="/assets/$JS"></script>
+    <link rel="stylesheet" crossorigin href="/assets/$CSS">
+  </head>
+  <body><div id="root"></div></body>
+</html>
+HTML
+echo "Deployed: $JS + $CSS"

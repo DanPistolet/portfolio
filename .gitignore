@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Vercel
+.vercel/
+
+# OS
+.DS_Store
+
+# Local env
+.env
+.env.local
+.env.*.local
+
+# Hashed JS/CSS bundles in deploy output folder
+assets/index-*.js
+assets/index-*.css
+assets/assets/
