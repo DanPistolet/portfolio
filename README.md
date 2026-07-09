@@ -1,72 +1,70 @@
-# Daniel Moor-Young — Portfolio
+# Daniel Moor-Young — Motion Design & AI Creative Portfolio
 
-Cyberpunk / Japanese Game UI personal portfolio for a Motion Designer.
+A cyberpunk / Japanese game UI inspired personal portfolio for motion design, AI-generated creative concepts, UI experiments and product storytelling.
 
-## How to Run Locally
+**Live website:** https://yadanix.vercel.app
 
-**Option A — Python (no install needed)**
+---
+
+## Featured Projects
+
+### Aura — AI Career Assistant
+A speculative AI-powered career assistant for junior creatives. The case study includes UI direction, product storytelling and a cinematic AI-generated advertisement built with AI video tools, voiceover, subtitles and post-production.
+
+### Sunny
+A visual / motion design case study focused on bright product presentation and portfolio storytelling.
+
+---
+
+## Tech Stack
+
+- React
+- Vite
+- Tailwind CSS
+- JavaScript
+- Vercel
+
+## Creative Tools
+
+- After Effects
+- Figma
+- Runway
+- Luma
+- ElevenLabs
+- Blender
+
+---
+
+## Project Focus
+
+This portfolio explores:
+
+- AI-assisted motion design
+- Cinematic product advertising
+- UI / UX presentation
+- Cyberpunk-inspired web design
+- Creative direction for digital products
+
+---
+
+## Run Locally
+
 ```bash
-cd portfolio
-python3 -m http.server 3456
-# Open: http://localhost:3456
+npm install
+npm run dev
 ```
 
-**Option B — Node (npx serve)**
-```bash
-npx serve portfolio -p 3456
-# Open: http://localhost:3456
-```
+Then open the local URL shown in the terminal.
 
-**Option C — VS Code Live Server**  
-Open `portfolio/index.html` → right-click → "Open with Live Server"
+## Deployment
+
+The project is deployed on Vercel.
 
 ---
 
-## Adding Your Images
+## Author
 
-Place these files in `assets/images/`:
+**Daniel Moor-Young**
+Motion Designer / AI Creative / Technical Support Specialist
 
-| File | Description |
-|------|-------------|
-| `character.png` | Anime character portrait (lime bg, transparent or cropped) |
-| `mascot-white.png` | Cat mascot logo on transparent bg |
-
-The site shows placeholders if images are missing — just drop them in when ready.
-
----
-
-## Replacing the QR Code
-
-The QR in the Contact section is a placeholder SVG.  
-To replace it, add your real QR image at `assets/images/qr-telegram.png` and update the `<div class="qr-code">` in `index.html`:
-
-```html
-<div class="qr-code">
-  <img src="assets/images/qr-telegram.png" alt="QR code for Telegram" width="124" height="124" />
-</div>
-```
-
----
-
-## Customizing Colors
-
-All colors are CSS variables in `style.css` at the top:
-
-```css
---lime:   #C8FF00   /* neon green accent */
---black:  #080808   /* background */
---white:  #F5F0E8   /* warm white text */
-```
-
-## Project Structure
-
-```
-portfolio/
-├── index.html       ← Main page
-├── style.css        ← All styles + CSS variables
-├── script.js        ← Interactions, animations
-└── assets/
-    └── images/
-        ├── character.png      ← Anime portrait (add yours)
-        └── mascot-white.png   ← Cat mascot (add yours)
-```
+Portfolio: https://yadanix.vercel.app
