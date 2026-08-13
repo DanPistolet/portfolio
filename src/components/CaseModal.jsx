@@ -5,6 +5,16 @@ const LIME = '#C8E500'
 
 /* ── Per-case presentation data ──────────────────────────────────── */
 const VISUAL = {
+  'casa-revive': {
+    sys: 'SYS_CASA_REVIVE', build: 'BUILD 901', record: 'RECORD_001',
+    sysLabel: '● DELIVERED', sysColor: '#22c55e', showOrbit: false,
+    lastUpdate: '2026.08.08', revision: 'FINAL', verified: '✓ CLIENT APPROVED',
+    tabs: ['HERO', 'ADS'],
+    thumbs: [
+      { g: 'linear-gradient(145deg,#2a2118,#120f0b)', t: 'HERO' },
+      { g: 'linear-gradient(145deg,#342719,#17110b)', t: 'FILM' },
+    ],
+  },
   aura: {
     sys: 'SYS_AURA_CORE', build: 'BUILD 826', record: 'RECORD_001',
     sysLabel: '● ONLINE', sysColor: '#22c55e', showOrbit: true,
@@ -536,15 +546,15 @@ function VideoPlayer({ accent, c, label }) {
   )
 
   return (
-    <div style={{ width:'92%', display:'flex', flexDirection:'column', gap:0 }}>
+    <div style={{ width: c.videoAspect === '9/16' ? 'min(68%, 250px)' : '92%', display:'flex', flexDirection:'column', gap:0, maxHeight:'100%' }}>
 
       {/* ── Video frame ── */}
-      <div style={{ width:'100%', aspectRatio:'16/9', border:`1px solid ${accent}28`, borderRadius:'2px 2px 0 0', overflow:'hidden', background:'#000', position:'relative', maxWidth:'100%' }}>
+      <div style={{ width:'100%', aspectRatio: c.videoAspect ?? '16/9', border:`1px solid ${accent}28`, borderRadius:'2px 2px 0 0', overflow:'hidden', background:'#000', position:'relative', maxWidth:'100%' }}>
 
         {/* Video element — no native controls */}
         <video
-          ref={videoRef} src={src}
-          style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', maxWidth:'100%' }}
+          ref={videoRef} src={src} poster={c.videoPoster}
+          style={{ width:'100%', height:'100%', objectFit:'contain', display:'block', maxWidth:'100%' }}
           playsInline preload="metadata"
           onContextMenu={e => e.preventDefault()}
         />

@@ -1,3 +1,7 @@
+import { CASES as ALL_CASES } from '../data/cases'
+
+const CASES = ALL_CASES.filter(c => c.id !== 'motion')
+
 const DataFileBadge = () => (
   <div className="flex items-center gap-1 font-mono text-[9px] tracking-widest uppercase text-white/50">
     <div className="w-1.5 h-1.5 rounded-full pulse-dot shrink-0" style={{ background: '#C8E500' }} aria-hidden="true" />
@@ -6,7 +10,7 @@ const DataFileBadge = () => (
 )
 
 /* Case logo with hover glow + scale */
-function CaseLogo({ src, alt, glowColor = 'rgba(124,58,237,0.5)', blendMode = 'normal', wide = false }) {
+function CaseLogo({ src, alt, glowColor = 'rgba(124,58,237,0.5)', blendMode = 'normal', wide = false, preview = false }) {
   return (
     <div
       className="case-logo-wrap flex items-center justify-center"
@@ -17,9 +21,13 @@ function CaseLogo({ src, alt, glowColor = 'rgba(124,58,237,0.5)', blendMode = 'n
         alt={alt}
         className="case-logo-img object-contain"
         style={{
-          maxHeight: wide ? 80 : 72,
+          maxHeight: preview ? 80 : (wide ? 80 : 72),
+          height: preview ? 80 : undefined,
           maxWidth: wide ? '100%' : '95%',
           width: wide ? '100%' : undefined,
+          aspectRatio: preview ? '9 / 16' : undefined,
+          objectFit: preview ? 'cover' : 'contain',
+          border: preview ? '1px solid rgba(212,176,131,.25)' : undefined,
           mixBlendMode: blendMode,
           filter: 'drop-shadow(0 0 0px transparent)',
           transition: 'transform .3s cubic-bezier(.34,1.56,.64,1), filter .3s ease',
@@ -42,37 +50,6 @@ function CaseLogo({ src, alt, glowColor = 'rgba(124,58,237,0.5)', blendMode = 'n
     </div>
   )
 }
-
-const CASES = [
-  {
-    id: 'aura',
-    num: 'CASE 01',
-    title: 'AURA',
-    sub: 'AI Career Assistant',
-    tags: 'AI Motion / UI / Creative Direction',
-    logo: { src: '/assets/aura-logo.png', alt: 'AURA project logo', glow: 'rgba(138,92,246,0.65)', blend: 'normal' },
-    status: { label: 'IN PROGRESS', color: '#FF7A00' },
-    type: 'UI / MOTION',
-    year: '2026',
-    link: null,
-    linkLabel: 'ERROR',
-    linkColor: '#ff4444',
-  },
-  {
-    id: 'sunny',
-    num: 'CASE 02',
-    title: 'SUNNY',
-    sub: 'Personal Project',
-    tags: '3D / Visual / Motion',
-    logo: { src: '/assets/sunny-logo.png', alt: 'Sunny project logo', glow: 'rgba(250,204,21,0.6)', blend: 'normal', wide: true },
-    status: { label: 'COMPLETED', color: '#22c55e' },
-    type: 'BRAND DESIGN',
-    year: '2024',
-    link: 'https://sunny.com',
-    linkLabel: 'SUNNY.COM',
-    linkColor: '#C8E500',
-  },
-]
 
 export default function MissionLog({ onOpenCase }) {
   return (
@@ -99,12 +76,12 @@ export default function MissionLog({ onOpenCase }) {
           WORKS / CASE FILES
         </div>
 
-        {/* Two-column cases */}
+        {/* Case file grid */}
         <div className="flex gap-3 flex-1 mobile-mission-cards">
 
           {CASES.map((c, ci) => (
             <div key={ci} className="contents">
-            {ci === 1 && <div style={{ width: 1, background: '#222', flexShrink: 0 }} aria-hidden="true" />}
+            {ci > 0 && <div style={{ width: 1, background: '#222', flexShrink: 0 }} aria-hidden="true" />}
             <div
               className="flex flex-col flex-1 min-w-0 mission-case-card"
               style={{ cursor: 'pointer' }}
@@ -116,14 +93,14 @@ export default function MissionLog({ onOpenCase }) {
             >
 
               {/* Case number + title */}
-              <div className="font-mono text-[9px] text-white/40 tracking-wider uppercase">{c.num}</div>
+              <div className="font-mono text-[9px] text-white/40 tracking-wider uppercase">{`CASE ${c.num}`}</div>
               <div className="font-mono font-bold text-white text-[12px] uppercase tracking-wide mt-0.5">{c.title}</div>
-              <div className="font-mono text-white/60 text-[9px] mt-1">{c.sub}</div>
-              <div className="font-mono text-white/40 text-[8px] mt-0.5 leading-tight">{c.tags}</div>
+              <div className="font-mono text-white/60 text-[9px] mt-1">{c.subtitle}</div>
+              <div className="font-mono text-white/40 text-[8px] mt-0.5 leading-tight">{c.role}</div>
 
               {/* Logo */}
               <div className="flex items-center justify-center shrink-0 mt-1">
-                <CaseLogo src={c.logo.src} alt={c.logo.alt} glowColor={c.logo.glow} blendMode={c.logo.blend} wide={c.logo.wide} />
+                <CaseLogo src={c.logo.src} alt={c.logo.alt} glowColor={c.logoGlow} blendMode="normal" wide={c.logo.wide} preview={c.logo.preview} />
               </div>
 
               {/* Meta */}
