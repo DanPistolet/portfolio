@@ -111,7 +111,7 @@ export const CASES = [
     videoSrc:    '/assets/casa-revive-commercial.mp4',
     videoPoster: '/assets/casa-revive-poster.jpg',
     videoAspect: '9/16',
-    logo:        { src: '/assets/casa-revive-poster.jpg', alt: 'Casa Revive AI commercial preview', wide: false, preview: true },
+    logo:        { src: '/assets/casa-revive-logo.jpg', alt: 'Casa Revive logo', wide: false },
     logoGlow:    'rgba(212,176,131,0.55)',
     accentColor: '#D4B083',
     gradient:    'linear-gradient(145deg, #120f0b 0%, #261d14 55%, #0d0b08 100%)',
